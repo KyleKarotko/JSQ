@@ -43,6 +43,7 @@ var time = questions.length * 15;
 var submitBtn = document.getElementById('submit');
 
 
+
 // starts the quiz
 var startButton = document.querySelector("#start");
 
@@ -80,21 +81,32 @@ function askQuestion(){
           time -= 15;
           timerEl.textContent = time;
           feedbackEl.textContent = 'Wrong';
+          
         } else {
+          
           feedbackEl.textContent = 'Correct!';
         }
         feedbackEl.setAttribute('class', 'feedback');
         setTimeout(function () {
-          feedbackEl.setAttribute('class', 'feedback hide');
+        feedbackEl.setAttribute('class', 'feedback hide');
         }, 1000);
-        if (time <= 0 || questionList===questions.length) {
+        questionList++;
+        
+        if (time <= 0 || questionList === questions.length) {
           document.getElementById("question-title").classList.add("hide");
           document.querySelector(".choices").innerHTML = "";
           endScreenEl.removeAttribute('class');
           gameOver();
+          if (time < 0 || questionList === questions.length) {
+            gameOver();
+          } else {
+            askQuestion();
+          }
+          
         } else {
-        askQuestion();
+          askQuestion();
         };
+        
       }
       document.querySelector(".choices").appendChild(button)
 
@@ -109,13 +121,13 @@ function gameOver() {
   endScreenEl.removeAttribute('class');
   var finalScoreEl = document.getElementById('final-score');
   finalScoreEl.textContent = time;
-  questionsEl.setAttribute('class', 'hide');
+  quizEl.setAttribute('class', 'hide');
 }
 
 // save scores
 
 function saveScore() {
-  var finalScoreEl = document.getElementById('final-score');
+  var finalScoreEl = document.getElementById('highscores');
   finalScoreEl.textContent = time;
   var initials = initialsEl.value;
    
@@ -133,11 +145,11 @@ function saveScore() {
     // display highscores
     
   function showScores(){
-    var currentScore = JSON.parse(window.localStorage.getItem('#highscores'));
+    var currentScore = JSON.parse(window.localStorage.getItem('highscores'));
     for (var i = 0; i < currentScore.length; i += 1) {
       var liEl= document.createElement('li');
       liEl.textContent = currentScore[i].initials + ' - ' + currentScore[i].score;
-      var olEl = document.getElementById('#highscores');
+      var olEl = document.getElementById('highscores');
       olEl.appendChild(liTag);
   }
 };
