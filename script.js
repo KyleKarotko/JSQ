@@ -31,11 +31,13 @@ var questions = [
   ];
   
 // Global vars
-var timeEl = document.querySelector(".time");
 var secondsLeft = 75;
 var questionList = 0;
 var quizEl = document.getElementById("questions")
 var endScreenEl = document.getElementById('end-screen');
+var timerEl = document.getElementById('time');
+//var timerId;
+var time = questions.length * 15;
 
 
 // starts the quiz
@@ -45,22 +47,23 @@ startButton.addEventListener("click", function(){
 document.getElementById("start-screen").classList.add("hide");
 quizEl.classList.remove("hide");
 askQuestion();
-
+//timerId = setInterval(setTime, 1000);
+timerEl.textContent = time;
 });
+
+
 // timer function
 function setTime() {
     var timer = setInterval(function() {
-        secondsLeft--;
-        timeEl.textContent = secondsLeft;
-    
-        if(secondsLeft === 0) {
-         
+        time--;
+        if(time === 0) {
           clearInterval(timer);
-          
         }
     
       }, 1000);
-}
+    }
+
+    
 // function to ask questions
 function askQuestion(){
     var currentQuestion = questions[questionList];
@@ -87,8 +90,7 @@ function askQuestion(){
       }
       document.querySelector(".choices").appendChild(button)
 
-
-
     })
 
 }
+
