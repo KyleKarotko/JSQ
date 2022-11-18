@@ -31,6 +31,7 @@ var questions = [
 ];
 
 // Global vars
+var globalScores = JSON.parse(localStorage.getItem("scores")) || []
 var secondsLeft = 75;
 var questionList = 0;
 var quizEl = document.getElementById("questions");
@@ -41,9 +42,25 @@ var initialsEl = document.getElementById('initials');
 var timerId;
 var time = questions.length * 15;
 var submitBtn = document.getElementById('submit');
+var scoreListEl = document.getElementById("scoreList");
+displayScores(globalScores)
+submitBtn.addEventListener("click", function(){
+  var initials = initialsEl.value
+  var finalScore = time
+  globalScores.push({initials:initials,score:finalScore})
+  displayScores(globalScores)
+  localStorage.setItem("scores",JSON.stringify(globalScores))
+})
 
-
-
+function displayScores(scores){
+  var scoreListHTML=""
+  if (scores.length){
+    scores.forEach(function(score){
+      scoreListHTML += `<li>${score.initials}: ${score.score}</li>`
+    })
+  }
+  scoreListEl.innerHTML = scoreListHTML;
+}
 // starts the quiz
 var startButton = document.querySelector("#start");
 
